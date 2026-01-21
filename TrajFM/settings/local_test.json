@@ -1,0 +1,68 @@
+[
+    {
+        "save_name": "test",
+        "dataset": {
+            "train_traj_df": "./samples/small_chengdu.h5",
+            "test_traj_df": "./samples/small_chengdu.h5",
+            "poi_df": "./samples/small_chengdu.h5",
+            "poi_embed": "./samples/small_chengdu_poi_embed.npy"
+        },
+        "trajfm": {
+            "embed_size": 64,
+            "d_model": 128,
+            "rope_layer": 2
+        },
+        "pretrain": {
+            "load": false,
+            "save": true,
+            "dataloader": {
+                "batch_size": 16,
+                "shuffle": true,
+                "num_workers": 8
+            },
+            "padder": {
+                "tp_pred_len": 5,
+                "mix_ratio": [1, 1, 1]
+            },
+            "config": {
+                "num_epoch": 2,
+                "lr": 1e-3
+            }
+        },
+        "finetune": {
+            "load": false,
+            "save": true,
+            "dataloader": {
+                "batch_size": 16,
+                "shuffle": true,
+                "num_workers": 8
+            },
+            "padder": {
+                "name": "tp",
+                "params": {
+                    "pred_len": 5,
+                    "eval": false
+                }
+            },
+            "config": {
+                "num_epoch": 2,
+                "lr": 1e-3
+            }
+        },
+        "test": {
+            "save": true,
+            "dataloader": {
+                "batch_size": 16,
+                "num_workers": 8
+            },
+            "padder": {
+                "name": "tp",
+                "params": {
+                    "pred_len": 5,
+                    "eval": true
+                }
+            },
+            "config": {}
+        }
+    }
+]

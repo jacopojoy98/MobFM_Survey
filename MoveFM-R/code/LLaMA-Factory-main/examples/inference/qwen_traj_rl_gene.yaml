@@ -1,0 +1,30 @@
+
+model_name_or_path: your_tuned_rl_model
+
+### method
+stage: sft
+do_predict: true
+finetuning_type: lora
+
+
+### dataset
+
+eval_dataset: traj_generate_test
+template: qwen3_nothink
+cutoff_len: 12500
+max_new_tokens: 12500
+max_samples: 1000
+overwrite_cache: true
+preprocessing_num_workers: 1
+
+### output
+output_dir: saves/qwen_traj_rl_gene
+overwrite_output_dir: true
+
+
+### eval
+per_device_eval_batch_size: 1
+predict_with_generate: true
+ddp_timeout: 180000000
+
+bf16: true

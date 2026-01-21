@@ -1,0 +1,49 @@
+# Replace with your Qwen3-4B-Instruct-2507 model path
+model_name_or_path: Qwen3-4B-Instruct-2507
+
+### method
+stage: sft
+do_train: true
+finetuning_type: lora
+lora_target: all
+lora_rank: 64
+lora_alpha: 128
+do_eval: true
+# deepspeed: examples/deepspeed/ds_z3_config.json
+
+
+### dataset
+dataset: traj_generate_train
+template: qwen3_nothink
+cutoff_len: 14500
+max_samples: 750000
+overwrite_cache: true
+preprocessing_num_workers: 4
+
+
+### 
+eval_dataset: traj_generate_test
+
+per_device_eval_batch_size: 1
+eval_on_start: true 
+eval_strategy: steps
+eval_steps: 30
+
+
+### train
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 2
+learning_rate: 8.0e-5
+num_train_epochs: 10.0
+lr_scheduler_type: cosine_with_min_lr
+warmup_ratio: 0.03
+bf16: true
+ddp_timeout: 180000000
+lr_scheduler_kwargs:  {'min_lr': 2.0e-5}
+
+### output
+output_dir: saves/qwen3_4b_traj_rl_sft_no_think
+logging_steps: 2
+save_steps: 30
+plot_loss: true
+overwrite_output_dir: true
